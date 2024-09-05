@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('_company_clients', function (Blueprint $table) {
             $table->id('clientId');
             $table->string('clientname');
-            $table->string('clientImageUrl');
+            $table->text('clientImageUrl');
             $table->timestamps();
         });
     }

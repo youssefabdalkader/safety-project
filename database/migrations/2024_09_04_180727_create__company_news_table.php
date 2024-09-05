@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('companyNewId');
             $table->string('companyNewTitle');
             $table->string('companyNewUrl');
-            $table->string('companyNewImageUrl');
+            $table->text('companyNewImageUrl');
             $table->timestamps();
         });
     }
