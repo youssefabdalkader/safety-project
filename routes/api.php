@@ -63,7 +63,8 @@ Route::prefix('company-clients')->group(function () {
 Route::prefix('company-certificates')->group(function () {
     Route::get('/', [CompanyCertificateController::class, 'index']);
     Route::post('/', [CompanyCertificateController::class, 'store']);
-    Route::get('/{id}', [CompanyCertificateController::class, 'show']);
+    Route::get('showbyid/{id}', [CompanyCertificateController::class, 'show']);
+    Route::get('showbycode/{id}', [CompanyCertificateController::class, 'show2']);
     Route::post('/{id}', [CompanyCertificateController::class, 'update']);
     Route::delete('/{id}', [CompanyCertificateController::class, 'destroy']);
 });

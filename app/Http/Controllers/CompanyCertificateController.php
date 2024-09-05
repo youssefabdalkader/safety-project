@@ -95,6 +95,30 @@ class CompanyCertificateController extends Controller
             ], 500);
         }
     }
+    public function show2($code)
+    {
+        try {
+            $certificate = CompanyCertificate::where('certificateCode', $code)->firstOrFail();
+
+            $certificate->certificatePhotoUrl = Storage::url($certificate->certificatePhotoUrl);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $certificate
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Certificate not found'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while fetching the certificate',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
     // Update a certificate
     public function update(Request $request, $id)
