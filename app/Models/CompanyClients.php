@@ -18,5 +18,11 @@ class CompanyClients extends Model
     protected $fillable = [
         'clientImageUrl',
         'clientname',
+        'categoryId',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'categoryId');
+    }
 }

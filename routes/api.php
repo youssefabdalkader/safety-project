@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyNewsController;
+use App\Http\Controllers\ServiceItemController;
 use App\Http\Controllers\ContactUsMailController;
 use App\Http\Controllers\CompanyClientsController;
 use App\Http\Controllers\CompanyServiceController;
@@ -69,3 +71,19 @@ Route::prefix('company-certificates')->group(function () {
     Route::delete('/{id}', [CompanyCertificateController::class, 'destroy']);
 });
 
+
+Route::group(['prefix' => 'categories'], function () {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::post('/', [CategoryController::class, 'store']);
+    Route::get('/{id}', [CategoryController::class, 'show']);
+    Route::post('/{id}', [CategoryController::class, 'update']);
+    Route::delete('/{id}', [CategoryController::class, 'destroy']);
+});
+
+Route::group(['prefix' => 'service-items'], function () {
+    Route::get('/', [ServiceItemController::class, 'index']);
+    Route::post('/', [ServiceItemController::class, 'store']);
+    Route::get('/{id}', [ServiceItemController::class, 'show']);
+    Route::put('/{id}', [ServiceItemController::class, 'update']);
+    Route::delete('/{id}', [ServiceItemController::class, 'destroy']);
+});

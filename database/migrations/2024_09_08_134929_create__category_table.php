@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_company_service', function (Blueprint $table) {
-            $table->id('companyServiceId');
-            $table->string('companyServiceName'); 
-            $table->text('companyServiceImageUrl'); 
+        Schema::create('_category', function (Blueprint $table) {
+            $table->id('categoryId');
+            $table->text('title');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('_company_service');
+        Schema::dropIfExists('_category');
     }
 };

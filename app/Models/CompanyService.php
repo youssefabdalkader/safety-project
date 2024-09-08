@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Models;
 
@@ -10,14 +10,17 @@ class CompanyService extends Model
     use HasFactory;
 
     protected $table = '_company_service';
-
     protected $primaryKey = 'companyServiceId';
-
-    public $timestamps = true;
 
     protected $fillable = [
         'companyServiceName',
         'companyServiceImageUrl',
-        'companyServiceDescription',
     ];
+
+    public function serviceItems()
+    {
+        return $this->belongsToMany(ServiceItem::class, '_company_service_service_item', 'companyServiceId', 'serviceItemId');
+    }
 }
+
+?>
