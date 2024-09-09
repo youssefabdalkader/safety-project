@@ -84,6 +84,6 @@ Route::group(['prefix' => 'service-items'], function () {
     Route::get('/', [ServiceItemController::class, 'index']);
     Route::post('/', [ServiceItemController::class, 'store']);
     Route::get('/{id}', [ServiceItemController::class, 'show']);
-    Route::put('/{id}', [ServiceItemController::class, 'update']);
+    Route::post('/{id}', [ServiceItemController::class, 'update']);
     Route::delete('/{id}', [ServiceItemController::class, 'destroy']);
 });

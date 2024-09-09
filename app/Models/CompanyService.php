@@ -15,6 +15,7 @@ class CompanyService extends Model
     protected $fillable = [
         'companyServiceName',
         'companyServiceImageUrl',
+        'serviceItemIds'
     ];
 
     public function serviceItems()

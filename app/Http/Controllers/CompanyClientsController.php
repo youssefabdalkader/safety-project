@@ -12,7 +12,7 @@ class CompanyClientsController extends Controller
     public function index()
     {
         try {
-            $clients = CompanyClients::all();
+            $clients = CompanyClients::with('category')->get();
             return response()->json([
                 'status' => 'success',
                 'data' => $clients
@@ -57,7 +57,8 @@ class CompanyClientsController extends Controller
     public function show($id)
     {
         try {
-            $client = CompanyClients::findOrFail($id);
+            $client = CompanyClients::with('category')->findOrFail($id);
+
             return response()->json([
                 'status' => 'success',
                 'data' => $client

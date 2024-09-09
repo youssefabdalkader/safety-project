@@ -11,7 +11,7 @@ class ServiceItem extends Model
     protected $table = '_service_item';
     protected $primaryKey = 'serviceItemId';
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title' , 'companyServiceIds'];
 
     public function companyServices()
     {
