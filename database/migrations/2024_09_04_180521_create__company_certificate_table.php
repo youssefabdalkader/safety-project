@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('_company_certificate', function (Blueprint $table) {
-            $table->id('certificateId');
-            $table->uuid('certificateCode')->unique();
+            $table->uuid('certificateCode')->primary();
             $table->string('certificatePhotoUrl');
+            $table->timestamp('startat')->nullable();
+            $table->timestamp('endat')->nullable();
+            $table->boolean('invalid')->default(false);
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\CompanyNewsController;
 use App\Http\Controllers\ServiceItemController;
 use App\Http\Controllers\ContactUsMailController;
@@ -65,8 +66,7 @@ Route::prefix('company-clients')->group(function () {
 Route::prefix('company-certificates')->group(function () {
     Route::get('/', [CompanyCertificateController::class, 'index']);
     Route::post('/', [CompanyCertificateController::class, 'store']);
-    Route::get('showbyid/{id}', [CompanyCertificateController::class, 'show']);
-    Route::get('showbycode/{id}', [CompanyCertificateController::class, 'show2']);
+    Route::get('showbycode/{id}', [CompanyCertificateController::class, 'show']);
     Route::post('/{id}', [CompanyCertificateController::class, 'update']);
     Route::delete('/{id}', [CompanyCertificateController::class, 'destroy']);
 });
@@ -86,4 +86,13 @@ Route::group(['prefix' => 'service-items'], function () {
     Route::get('/{id}', [ServiceItemController::class, 'show']);
     Route::post('/{id}', [ServiceItemController::class, 'update']);
     Route::delete('/{id}', [ServiceItemController::class, 'destroy']);
+});
+
+
+Route::group(['prefix' => 'statistics'], function () {
+    Route::get('/', [StatisticController::class, 'index']);                     
+    Route::post('/', [StatisticController::class, 'store']);            
+    Route::get('{id}', [StatisticController::class, 'show']);        
+    Route::post('{id}', [StatisticController::class, 'update']);      
+    Route::delete('{id}', [StatisticController::class, 'destroy']);  
 });

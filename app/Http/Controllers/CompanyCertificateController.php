@@ -2,169 +2,117 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificate;
 use Illuminate\Http\Request;
-use App\Models\CompanyCertificate;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 
 class CompanyCertificateController extends Controller
 {
-    // Fetch all certificates
     public function index()
     {
         try {
-            $certificates = CompanyCertificate::all()->map(function ($certificate) {
-                $certificate->certificatePhotoUrl = Storage::url($certificate->certificatePhotoUrl);
-                return $certificate;
+            // Retrieve all certificates
+            $certificates = Certificate::all();
+    
+            // Map through each certificate to include the full URL of the image
+            $certificatesWithUrls = $certificates->map(function ($certificate) {
+                return [
+                    'certificateCode' => $certificate->certificateCode,
+                    'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
+                    'startat' => $certificate->startat,
+                    'endat' => $certificate->endat,
+                ];
             });
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $certificates
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'An error occurred while fetching certificates',
-                'error' => $e->getMessage()
-            ], 500);
+    
+            return response()->json($certificatesWithUrls);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Error retrieving certificates', 'message' => $e->getMessage()], 500);
         }
     }
-
-    // Store a new certificate
+    
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'certificatePhotoUrl' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validate image
+        $request->validate([
+            'certificatePhotoUrl' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'startat' => 'required|date',
+            'endat' => 'required|date|after:startat',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        // Handle the uploaded image
+        $path = $request->file('certificatePhotoUrl')->store('certificates', 'public');
 
-        try {
-            // Handle file upload
-            $file = $request->file('certificatePhotoUrl');
-            $fileName = time() . '-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs('public/certificates', $fileName);
+        // Create the certificate with the path stored in the database
+        $certificate = Certificate::create([
+            'certificateCode' => Str::uuid(),
+            'certificatePhotoUrl' => $path, // Store the relative path
+            'startat' => $request->startat,
+            'endat' => $request->endat,
+        ]);
 
-            $certificate = CompanyCertificate::create([
-                'certificateCode' => Str::uuid()->toString(), // Generate UUID or other unique code
-                'certificatePhotoUrl' => Storage::url($filePath), // Store URL path
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $certificate
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'An error occurred while storing the certificate',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        // Return the certificate with the full URL of the image
+        return response()->json([
+            'certificateCode' => $certificate->certificateCode,
+            'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
+            'startat' => $certificate->startat,
+            'endat' => $certificate->endat,
+        ], 201);
     }
 
-    // Show a single certificate
+    // Show a certificate
     public function show($id)
     {
         try {
-            $certificate = CompanyCertificate::findOrFail($id);
-            $certificate->certificatePhotoUrl = Storage::url($certificate->certificatePhotoUrl);
-
+            $certificate = Certificate::findOrFail($id);
             return response()->json([
-                'status' => 'success',
-                'data' => $certificate
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Certificate not found'
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'An error occurred while fetching the certificate',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-    public function show2($code)
-    {
-        try {
-            $certificate = CompanyCertificate::where('certificateCode', $code)->firstOrFail();
-
-            $certificate->certificatePhotoUrl = Storage::url($certificate->certificatePhotoUrl);
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $certificate
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Certificate not found'
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'An error occurred while fetching the certificate',
-                'error' => $e->getMessage()
-            ], 500);
+                'certificateCode' => $certificate->certificateCode,
+                'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
+                'startat' => $certificate->startat,
+                'endat' => $certificate->endat,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Certificate not found'], 404);
         }
     }
 
     // Update a certificate
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'certificatePhotoUrl' => 'sometimes|required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            $certificate = CompanyCertificate::findOrFail($id);
+            $request->validate([
+                'startat' => 'sometimes|required|date',
+                'endat' => 'sometimes|required|date|after:startat',
+                'certificatePhotoUrl' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+            ]);
 
+            $certificate = Certificate::findOrFail($id);
+
+            // If a new photo is uploaded
             if ($request->hasFile('certificatePhotoUrl')) {
-                // Handle file upload
-                $file = $request->file('certificatePhotoUrl');
-                $fileName = time() . '-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-                $filePath = $file->storeAs('public/certificates', $fileName);
+                // Delete the old photo
+                Storage::disk('public')->delete($certificate->certificatePhotoUrl);
 
-                // Update photo URL
-                $certificate->certificatePhotoUrl = Storage::url($filePath);
+                // Store the new photo
+                $path = $request->file('certificatePhotoUrl')->store('certificates', 'public');
+                $certificate->certificatePhotoUrl = $path;
             }
 
-            $certificate->save();
+            // Update the certificate with new data
+            $certificate->update($request->only('startat', 'endat'));
 
+            // Return the updated certificate with the full URL of the image
             return response()->json([
-                'status' => 'success',
-                'data' => $certificate
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Certificate not found'
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'An error occurred while updating the certificate',
-                'error' => $e->getMessage()
-            ], 500);
+                'certificateCode' => $certificate->certificateCode,
+                'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
+                'startat' => $certificate->startat,
+                'endat' => $certificate->endat,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Certificate not found'], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Error updating certificate', 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -172,24 +120,23 @@ class CompanyCertificateController extends Controller
     public function destroy($id)
     {
         try {
-            $certificate = CompanyCertificate::findOrFail($id);
+            $certificate = Certificate::findOrFail($id);
+            // Get the path of the photo
+            $photoPath = $certificate->certificatePhotoUrl;
+
+            // Delete the file from storage
+            if ($photoPath && Storage::disk('public')->exists($photoPath)) {
+                Storage::disk('public')->delete($photoPath);
+            }
+
+            // Delete the certificate record from the database
             $certificate->delete();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Certificate deleted successfully'
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Certificate not found'
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'An error occurred while deleting the certificate',
-                'error' => $e->getMessage()
-            ], 500);
+            return response()->json(['message' => 'Certificate deleted successfully']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Certificate not found'], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Error deleting certificate', 'message' => $e->getMessage()], 500);
         }
     }
 }

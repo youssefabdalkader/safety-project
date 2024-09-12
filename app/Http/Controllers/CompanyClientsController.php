@@ -79,9 +79,9 @@ class CompanyClientsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'clientname' => 'sometimes|required|string|max:255',
-            'clientImageUrl' => 'sometimes|required|url', // تأكد أن الصورة هي رابط صحيح
-            'categoryId' => 'sometimes|required|exists:_category,categoryId', // تحقق من أن categoryId موجود
+            'clientname' => 'sometimes|required|string|max:255',  
+            'clientImageUrl' => 'sometimes|required|url', 
+            'categoryId' => 'sometimes|required|exists:_category,categoryId', 
         ]);
 
         if ($validator->fails()) {
