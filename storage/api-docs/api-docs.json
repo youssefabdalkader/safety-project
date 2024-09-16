@@ -1,0 +1,1822 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My API Documentation",
+        "description": "API documentation for my Laravel project",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get list of categories",
+                "operationId": "ead5fb1cf2a7453acb2e37928a1b1eaf",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create a new category",
+                "operationId": "bb02f0320882db37f99574196577e446",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category created successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get a single category",
+                "operationId": "4cdf41756315109f1efc72787db5830a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Category Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update an existing category",
+                "operationId": "8ea50e48cbcd07043a3fd8145e99bfbd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Category updated successfully"
+                    },
+                    "404": {
+                        "description": "Category Not Found"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete a category",
+                "operationId": "f1b8af6e84bd52b9594d98bde748ebd6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully"
+                    },
+                    "404": {
+                        "description": "Category Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-certificates": {
+            "get": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Get all certificates",
+                "operationId": "0ba3aa5f5064748c99407035706f3ac3",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Create a certificate",
+                "operationId": "6d9bb5e953f4875a56c2d70df0f39988",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "certificatePhotoUrl",
+                                    "startat",
+                                    "endat"
+                                ],
+                                "properties": {
+                                    "certificatePhotoUrl": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "startat": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "endat": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-certificates/showbycode/{id}": {
+            "get": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Get certificate by ID",
+                "operationId": "8415190c4c8839e188dad3d9534f0ef5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/company-certificates/{id}": {
+            "post": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Update certificate",
+                "operationId": "edbdd028c811f759d470bfcdd1495e75",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "startat": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "endat": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "certificatePhotoUrl": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Delete certificate",
+                "operationId": "26444d0276109f702db92ec35af5f410",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-clients": {
+            "get": {
+                "tags": [
+                    "Company Clients"
+                ],
+                "summary": "Get all company clients",
+                "operationId": "cbc13384b2833e4836fa02c7620e1ef1",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company Clients"
+                ],
+                "summary": "Create a new company client",
+                "operationId": "d2febc28981eac2e0f1905fb1abeadf8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "clientname",
+                                    "clientImageUrl",
+                                    "categoryId"
+                                ],
+                                "properties": {
+                                    "clientname": {
+                                        "description": "Name of the client",
+                                        "type": "string"
+                                    },
+                                    "clientImageUrl": {
+                                        "description": "URL of the client image",
+                                        "type": "string"
+                                    },
+                                    "categoryId": {
+                                        "description": "Category ID of the client",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Client created successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-clients/{id}": {
+            "get": {
+                "tags": [
+                    "Company Clients"
+                ],
+                "summary": "Get a company client by ID",
+                "operationId": "a376ffb8a177110abe573421757c1db9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company Clients"
+                ],
+                "summary": "Update a company client",
+                "operationId": "04561686dd465e9177af1822eab71d5f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "clientname",
+                                    "clientImageUrl",
+                                    "categoryId"
+                                ],
+                                "properties": {
+                                    "clientname": {
+                                        "description": "Name of the client",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "clientImageUrl": {
+                                        "description": "URL of the client image",
+                                        "type": "string",
+                                        "example": "http://example.com/image.jpg"
+                                    },
+                                    "categoryId": {
+                                        "description": "Category ID of the client",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Client updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "clientId": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "clientname": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "clientImageUrl": {
+                                                    "type": "string",
+                                                    "example": "http://example.com/image.jpg"
+                                                },
+                                                "categoryId": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Company Clients"
+                ],
+                "summary": "Delete a company client",
+                "operationId": "cfbeb231df30d24f6841773dcba2ab1a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Client deleted successfully"
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-news": {
+            "get": {
+                "tags": [
+                    "Company News"
+                ],
+                "summary": "Fetch all news",
+                "operationId": "dcb016f3bbe182b6e88f93a20bccebc2",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company News"
+                ],
+                "summary": "Store new news",
+                "operationId": "b44d37c522d13809c76f486dbd453c65",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "companyNewTitle",
+                                    "companyNewUrl",
+                                    "companyNewImageUrl"
+                                ],
+                                "properties": {
+                                    "companyNewTitle": {
+                                        "description": "Title of the news",
+                                        "type": "string"
+                                    },
+                                    "companyNewUrl": {
+                                        "description": "URL of the news",
+                                        "type": "string"
+                                    },
+                                    "companyNewImageUrl": {
+                                        "description": "Image URL of the news",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "News created successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-news/{id}": {
+            "get": {
+                "tags": [
+                    "Company News"
+                ],
+                "summary": "Show a single news item",
+                "operationId": "459cd2521987eab6cb9fd21bba990257",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "News not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company News"
+                ],
+                "summary": "Update a news item",
+                "operationId": "17dd9972d41b52e75728a8222cf3f902",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "companyNewTitle": {
+                                        "description": "Title of the news",
+                                        "type": "string"
+                                    },
+                                    "companyNewUrl": {
+                                        "description": "URL of the news",
+                                        "type": "string"
+                                    },
+                                    "companyNewImageUrl": {
+                                        "description": "Image URL of the news",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "News updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "404": {
+                        "description": "News not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Company News"
+                ],
+                "summary": "Delete a news item",
+                "operationId": "062a9990b832b3c0c485b49f703ac92c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "News deleted successfully"
+                    },
+                    "404": {
+                        "description": "News not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-services": {
+            "get": {
+                "tags": [
+                    "Company Service"
+                ],
+                "summary": "Fetch all company services",
+                "operationId": "0762eab673099bb6cdfedff5e823e6f1",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company Service"
+                ],
+                "summary": "Store a new company service",
+                "operationId": "78ab3e544b1344a22cc1a0d85e2f773d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "companyServiceName",
+                                    "companyServiceImageUrl"
+                                ],
+                                "properties": {
+                                    "companyServiceName": {
+                                        "description": "Name of the company service",
+                                        "type": "string"
+                                    },
+                                    "companyServiceImageUrl": {
+                                        "description": "Image URL of the company service",
+                                        "type": "string"
+                                    },
+                                    "serviceItemIds": {
+                                        "description": "Array of service item IDs",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Company service created successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/company-services/{id}": {
+            "get": {
+                "tags": [
+                    "Company Service"
+                ],
+                "summary": "Show a single company service",
+                "operationId": "1ca265e74461c7bd461443ca805323d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Company service not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Company Service"
+                ],
+                "summary": "Update a company service",
+                "operationId": "aba6d10eaf6d90e3752546ae15d1c7fe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "companyServiceName": {
+                                        "description": "Name of the company service",
+                                        "type": "string"
+                                    },
+                                    "companyServiceImageUrl": {
+                                        "description": "Image URL of the company service",
+                                        "type": "string"
+                                    },
+                                    "serviceItemIds": {
+                                        "description": "Array of service item IDs",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Company service updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "404": {
+                        "description": "Company service not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Company Service"
+                ],
+                "summary": "Delete a company service",
+                "operationId": "38cefece89b9fa3506b42e35967f4358",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Company service deleted successfully"
+                    },
+                    "404": {
+                        "description": "Company service not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/contact-us-mails": {
+            "get": {
+                "tags": [
+                    "Contact Us Mails"
+                ],
+                "summary": "Get all messages",
+                "operationId": "1b0d653da3cc051bf596f9763bb418b5",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contact Us Mails"
+                ],
+                "summary": "Store a new message",
+                "operationId": "414fdce8e26129e4f5221ac4fda48b27",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "userName",
+                                    "userPhone",
+                                    "userEmail",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "userName": {
+                                        "description": "User's name",
+                                        "type": "string"
+                                    },
+                                    "userPhone": {
+                                        "description": "User's phone number",
+                                        "type": "string"
+                                    },
+                                    "userEmail": {
+                                        "description": "User's email",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "message": {
+                                        "description": "User's message",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Message created successfully"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/contact-us-mails/{id}": {
+            "get": {
+                "tags": [
+                    "Contact Us Mails"
+                ],
+                "summary": "Show a single message",
+                "operationId": "a69a3fa016ea2b115305e2201accc373",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Message not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contact Us Mails"
+                ],
+                "summary": "Update a message",
+                "operationId": "3cef4d306a532c149ddbc2054351a702",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "userName": {
+                                        "description": "User's name",
+                                        "type": "string"
+                                    },
+                                    "userPhone": {
+                                        "description": "User's phone number",
+                                        "type": "string"
+                                    },
+                                    "userEmail": {
+                                        "description": "User's email",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "message": {
+                                        "description": "User's message",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Message updated successfully"
+                    },
+                    "404": {
+                        "description": "Message not found"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contact Us Mails"
+                ],
+                "summary": "Delete a message",
+                "operationId": "1525ccc1dffd63ab861994e723186d47",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Message deleted successfully"
+                    },
+                    "404": {
+                        "description": "Message not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/service-items": {
+            "get": {
+                "tags": [
+                    "Service Items"
+                ],
+                "summary": "Get all service items",
+                "operationId": "63c0bf5f9c15fc0ec6193d44a1acfa8a",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "companyServices": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Service Items"
+                ],
+                "summary": "Store a new service item",
+                "operationId": "5b2c49b0986334c10ad2ffc40f22d584",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the service item",
+                                        "type": "string"
+                                    },
+                                    "companyServiceIds": {
+                                        "description": "Array of related company service IDs",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Service item created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "companyServices": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/service-items/{id}": {
+            "get": {
+                "tags": [
+                    "Service Items"
+                ],
+                "summary": "Show a single service item",
+                "operationId": "c5e03ebb6d305f15231a807120fc4161",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "companyServices": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service item not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Service Items"
+                ],
+                "summary": "Update a service item",
+                "operationId": "0fa09328e46050d2ae236ccb8e8a8af0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the service item",
+                                        "type": "string"
+                                    },
+                                    "companyServiceIds": {
+                                        "description": "Array of related company service IDs",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Service item updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "companyServices": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service item not found"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Service Items"
+                ],
+                "summary": "Delete a service item",
+                "operationId": "507a75a5091b9af4a9211d007e9af282",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service item deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Service item deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service item not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/statistics": {
+            "get": {
+                "tags": [
+                    "Statistics"
+                ],
+                "summary": "Get all statistics",
+                "operationId": "82f865d2c1bf5c0495acee18a9d5e855",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "number": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Statistics"
+                ],
+                "summary": "Create a new statistic",
+                "operationId": "6fb509d93610843fcb202378833736f6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "number"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the statistic",
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "description": "Number associated with the statistic",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Statistic created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "number": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/statistics/{id}": {
+            "get": {
+                "tags": [
+                    "Statistics"
+                ],
+                "summary": "Show a specific statistic",
+                "operationId": "734f63f364cf0e0d48bc9fee5c04c79b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "number": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Statistic not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Statistics"
+                ],
+                "summary": "Update a specific statistic",
+                "operationId": "bd675058ce8246b2a2220affbad9f635",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the statistic",
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "description": "Number associated with the statistic",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Statistic updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "number": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Statistic not found"
+                    },
+                    "400": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Statistics"
+                ],
+                "summary": "Delete a specific statistic",
+                "operationId": "661dc921057c01276f48ffaa261fcb89",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Statistic deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Statistic deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Statistic not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Categories",
+            "description": "Categories"
+        },
+        {
+            "name": "Certificates",
+            "description": "Certificates"
+        },
+        {
+            "name": "Company Clients",
+            "description": "Company Clients"
+        },
+        {
+            "name": "Company News",
+            "description": "Company News"
+        },
+        {
+            "name": "Company Service",
+            "description": "Company Service"
+        },
+        {
+            "name": "Contact Us Mails",
+            "description": "Contact Us Mails"
+        },
+        {
+            "name": "Service Items",
+            "description": "Service Items"
+        },
+        {
+            "name": "Statistics",
+            "description": "Statistics"
+        }
+    ]
+}

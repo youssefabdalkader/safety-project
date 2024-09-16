@@ -6,9 +6,24 @@ use App\Models\CompanyNews;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class CompanyNewsController extends Controller
 {
-    // Fetch all news
+    /**
+     * @OA\Get(
+     *     path="/company-news",
+     *     summary="Fetch all news",
+     *     tags={"Company News"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function index()
     {
         try {
@@ -26,7 +41,34 @@ class CompanyNewsController extends Controller
         }
     }
 
-    // Store new news
+    /**
+     * @OA\Post(
+     *     path="/company-news",
+     *     summary="Store new news",
+     *     tags={"Company News"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"companyNewTitle", "companyNewUrl", "companyNewImageUrl"},
+     *             @OA\Property(property="companyNewTitle", type="string", description="Title of the news"),
+     *             @OA\Property(property="companyNewUrl", type="string", description="URL of the news"),
+     *             @OA\Property(property="companyNewImageUrl", type="string", description="Image URL of the news")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="News created successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation Error"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,7 +104,31 @@ class CompanyNewsController extends Controller
         }
     }
 
-    // Show a single news item
+    /**
+     * @OA\Get(
+     *     path="/company-news/{id}",
+     *     summary="Show a single news item",
+     *     tags={"Company News"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="News not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -85,7 +151,42 @@ class CompanyNewsController extends Controller
         }
     }
 
-    // Update a news item
+    /**
+     * @OA\Post(
+     *     path="/company-news/{id}",
+     *     summary="Update a news item",
+     *     tags={"Company News"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="companyNewTitle", type="string", description="Title of the news"),
+     *             @OA\Property(property="companyNewUrl", type="string", description="URL of the news"),
+     *             @OA\Property(property="companyNewImageUrl", type="string", description="Image URL of the news")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="News updated successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation Error"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="News not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -123,7 +224,31 @@ class CompanyNewsController extends Controller
         }
     }
 
-    // Delete a news item
+    /**
+     * @OA\Delete(
+     *     path="/company-news/{id}",
+     *     summary="Delete a news item",
+     *     tags={"Company News"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="News deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="News not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         try {

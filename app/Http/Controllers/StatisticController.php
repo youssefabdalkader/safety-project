@@ -8,7 +8,33 @@ use Illuminate\Support\Facades\Validator;
 
 class StatisticController extends Controller
 {
-    // Get all statistics
+    /**
+     * @OA\Get(
+     *     path="/statistics",
+     *     summary="Get all statistics",
+     *     tags={"Statistics"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer"),
+     *                     @OA\Property(property="title", type="string"),
+     *                     @OA\Property(property="number", type="integer")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function index()
     {
         try {
@@ -19,7 +45,43 @@ class StatisticController extends Controller
         }
     }
 
-    // Create a new statistic
+    /**
+     * @OA\Post(
+     *     path="/statistics",
+     *     summary="Create a new statistic",
+     *     tags={"Statistics"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title", "number"},
+     *             @OA\Property(property="title", type="string", description="Title of the statistic"),
+     *             @OA\Property(property="number", type="integer", description="Number associated with the statistic")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Statistic created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="number", type="integer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation Error"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -39,7 +101,41 @@ class StatisticController extends Controller
         }
     }
 
-    // Show a specific statistic
+    /**
+     * @OA\Get(
+     *     path="/statistics/{id}",
+     *     summary="Show a specific statistic",
+     *     tags={"Statistics"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="number", type="integer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Statistic not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -52,7 +148,51 @@ class StatisticController extends Controller
         }
     }
 
-    // Update a specific statistic
+    /**
+     * @OA\Put(
+     *     path="/statistics/{id}",
+     *     summary="Update a specific statistic",
+     *     tags={"Statistics"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="title", type="string", description="Title of the statistic"),
+     *             @OA\Property(property="number", type="integer", description="Number associated with the statistic")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Statistic updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="number", type="integer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Statistic not found"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation Error"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -75,7 +215,35 @@ class StatisticController extends Controller
         }
     }
 
-    // Delete a specific statistic
+    /**
+     * @OA\Delete(
+     *     path="/statistics/{id}",
+     *     summary="Delete a specific statistic",
+     *     tags={"Statistics"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Statistic deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Statistic deleted")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Statistic not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         try {

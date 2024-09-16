@@ -8,7 +8,21 @@ use Illuminate\Support\Facades\Validator;
 
 class ContactUsMailController extends Controller
 {
-    // Fetch all messages
+    /**
+     * @OA\Get(
+     *     path="/contact-us-mails",
+     *     summary="Get all messages",
+     *     tags={"Contact Us Mails"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function index()
     {
         try {
@@ -26,7 +40,35 @@ class ContactUsMailController extends Controller
         }
     }
 
-    // Store a new message
+    /**
+     * @OA\Post(
+     *     path="/contact-us-mails",
+     *     summary="Store a new message",
+     *     tags={"Contact Us Mails"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"userName", "userPhone", "userEmail", "message"},
+     *             @OA\Property(property="userName", type="string", description="User's name"),
+     *             @OA\Property(property="userPhone", type="string", description="User's phone number"),
+     *             @OA\Property(property="userEmail", type="string", format="email", description="User's email"),
+     *             @OA\Property(property="message", type="string", description="User's message")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Message created successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation Error"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -58,7 +100,31 @@ class ContactUsMailController extends Controller
         }
     }
 
-    // Show a single message
+    /**
+     * @OA\Get(
+     *     path="/contact-us-mails/{id}",
+     *     summary="Show a single message",
+     *     tags={"Contact Us Mails"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Message not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -81,7 +147,43 @@ class ContactUsMailController extends Controller
         }
     }
 
-    // Update a message
+    /**
+     * @OA\Post(
+     *     path="/contact-us-mails/{id}",
+     *     summary="Update a message",
+     *     tags={"Contact Us Mails"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="userName", type="string", description="User's name"),
+     *             @OA\Property(property="userPhone", type="string", description="User's phone number"),
+     *             @OA\Property(property="userEmail", type="string", format="email", description="User's email"),
+     *             @OA\Property(property="message", type="string", description="User's message")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Message updated successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Message not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation Error"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -119,7 +221,31 @@ class ContactUsMailController extends Controller
         }
     }
 
-    // Delete a message
+    /**
+     * @OA\Delete(
+     *     path="/contact-us-mails/{id}",
+     *     summary="Delete a message",
+     *     tags={"Contact Us Mails"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Message deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Message not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         try {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Certificate;
@@ -9,30 +8,60 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 
+
 class CompanyCertificateController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/company-certificates",
+     *     summary="Get all certificates",
+     *     tags={"Certificates"},
+     *     @OA\Response(response=200, description="Success"),
+     *     @OA\Response(response=500, description="Internal Server Error")
+     * )
+     */
     public function index()
     {
         try {
-            // Retrieve all certificates
             $certificates = Certificate::all();
-    
-            // Map through each certificate to include the full URL of the image
             $certificatesWithUrls = $certificates->map(function ($certificate) {
                 return [
                     'certificateCode' => $certificate->certificateCode,
                     'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
                     'startat' => $certificate->startat,
                     'endat' => $certificate->endat,
+                    'invalid' => $certificate->invalid
                 ];
             });
-    
+
             return response()->json($certificatesWithUrls);
         } catch (Exception $e) {
             return response()->json(['error' => 'Error retrieving certificates', 'message' => $e->getMessage()], 500);
         }
     }
-    
+
+/**
+ * @OA\Post(
+ *     path="/company-certificates",
+ *     summary="Create a certificate",
+ *     tags={"Certificates"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 required={"certificatePhotoUrl", "startat", "endat"},
+ *                 @OA\Property(property="certificatePhotoUrl", type="string", format="binary"),
+ *                 @OA\Property(property="startat", type="string", format="date"),
+ *                 @OA\Property(property="endat", type="string", format="date")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response=201, description="Created"),
+ *     @OA\Response(response=422, description="Validation Error"),
+ *     @OA\Response(response=500, description="Internal Server Error")
+ * )
+ */
     public function store(Request $request)
     {
         $request->validate([
@@ -41,27 +70,40 @@ class CompanyCertificateController extends Controller
             'endat' => 'required|date|after:startat',
         ]);
 
-        // Handle the uploaded image
         $path = $request->file('certificatePhotoUrl')->store('certificates', 'public');
 
-        // Create the certificate with the path stored in the database
         $certificate = Certificate::create([
             'certificateCode' => Str::uuid(),
-            'certificatePhotoUrl' => $path, // Store the relative path
+            'certificatePhotoUrl' => $path,
             'startat' => $request->startat,
             'endat' => $request->endat,
         ]);
 
-        // Return the certificate with the full URL of the image
         return response()->json([
             'certificateCode' => $certificate->certificateCode,
             'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
             'startat' => $certificate->startat,
             'endat' => $certificate->endat,
+            'invalid' => $certificate->invalid
+
         ], 201);
     }
 
-    // Show a certificate
+    /**
+     * @OA\Get(
+     *     path="/company-certificates/showbycode/{id}",
+     *     summary="Get certificate by ID",
+     *     tags={"Certificates"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Success"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
     public function show($id)
     {
         try {
@@ -71,13 +113,41 @@ class CompanyCertificateController extends Controller
                 'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
                 'startat' => $certificate->startat,
                 'endat' => $certificate->endat,
+                'invalid' => $certificate->invalid
+
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Certificate not found'], 404);
         }
     }
 
-    // Update a certificate
+/**
+ * @OA\Post(
+ *     path="/company-certificates/{id}",
+ *     summary="Update certificate",
+ *     tags={"Certificates"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=false,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 @OA\Property(property="startat", type="string", format="date"),
+ *                 @OA\Property(property="endat", type="string", format="date"),
+ *                 @OA\Property(property="certificatePhotoUrl", type="string", format="binary")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Success"),
+ *     @OA\Response(response=404, description="Not Found"),
+ *     @OA\Response(response=500, description="Internal Server Error")
+ * )
+ */
     public function update(Request $request, $id)
     {
         try {
@@ -89,25 +159,21 @@ class CompanyCertificateController extends Controller
 
             $certificate = Certificate::findOrFail($id);
 
-            // If a new photo is uploaded
             if ($request->hasFile('certificatePhotoUrl')) {
-                // Delete the old photo
                 Storage::disk('public')->delete($certificate->certificatePhotoUrl);
-
-                // Store the new photo
                 $path = $request->file('certificatePhotoUrl')->store('certificates', 'public');
                 $certificate->certificatePhotoUrl = $path;
             }
 
-            // Update the certificate with new data
             $certificate->update($request->only('startat', 'endat'));
 
-            // Return the updated certificate with the full URL of the image
             return response()->json([
                 'certificateCode' => $certificate->certificateCode,
                 'certificatePhotoUrl' => Storage::url($certificate->certificatePhotoUrl),
                 'startat' => $certificate->startat,
                 'endat' => $certificate->endat,
+                'invalid' => $certificate->invalid
+
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Certificate not found'], 404);
@@ -116,22 +182,33 @@ class CompanyCertificateController extends Controller
         }
     }
 
-    // Delete a certificate
+    /**
+     * @OA\Delete(
+     *     path="/company-certificates/{id}",
+     *     summary="Delete certificate",
+     *     tags={"Certificates"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Deleted"),
+     *     @OA\Response(response=404, description="Not Found"),
+     *     @OA\Response(response=500, description="Internal Server Error")
+     * )
+     */
     public function destroy($id)
     {
         try {
             $certificate = Certificate::findOrFail($id);
-            // Get the path of the photo
             $photoPath = $certificate->certificatePhotoUrl;
 
-            // Delete the file from storage
             if ($photoPath && Storage::disk('public')->exists($photoPath)) {
                 Storage::disk('public')->delete($photoPath);
             }
 
-            // Delete the certificate record from the database
             $certificate->delete();
-
             return response()->json(['message' => 'Certificate deleted successfully']);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Certificate not found'], 404);
