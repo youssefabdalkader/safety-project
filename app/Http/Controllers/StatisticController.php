@@ -149,7 +149,7 @@ class StatisticController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/statistics/{id}",
      *     summary="Update a specific statistic",
      *     tags={"Statistics"},
