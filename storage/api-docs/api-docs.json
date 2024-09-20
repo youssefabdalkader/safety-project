@@ -1661,12 +1661,12 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Statistics"
                 ],
                 "summary": "Update a specific statistic",
-                "operationId": "bd675058ce8246b2a2220affbad9f635",
+                "operationId": "cbab9055ad7dab5a8675e2d155a62668",
                 "parameters": [
                     {
                         "name": "id",
