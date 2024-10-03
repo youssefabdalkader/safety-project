@@ -24,7 +24,7 @@ class StatisticController extends Controller
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="integer"),
      *                     @OA\Property(property="title", type="string"),
-     *                     @OA\Property(property="number", type="integer")
+     *                     @OA\Property(property="number", type="string")
      *                 )
      *             )
      *         )
@@ -55,7 +55,7 @@ class StatisticController extends Controller
      *         @OA\JsonContent(
      *             required={"title", "number"},
      *             @OA\Property(property="title", type="string", description="Title of the statistic"),
-     *             @OA\Property(property="number", type="integer", description="Number associated with the statistic")
+     *             @OA\Property(property="number", type="string", description="Number associated with the statistic")
      *         )
      *     ),
      *     @OA\Response(
@@ -68,7 +68,7 @@ class StatisticController extends Controller
      *                 type="object",
      *                 @OA\Property(property="id", type="integer"),
      *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="number", type="integer")
+     *                 @OA\Property(property="number", type="string")
      *             )
      *         )
      *     ),
@@ -86,7 +86,7 @@ class StatisticController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'number' => 'required|integer',
+            'number' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -122,7 +122,7 @@ class StatisticController extends Controller
      *                 type="object",
      *                 @OA\Property(property="id", type="integer"),
      *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="number", type="integer")
+     *                 @OA\Property(property="number", type="string")
      *             )
      *         )
      *     ),
@@ -162,7 +162,7 @@ class StatisticController extends Controller
      *     @OA\RequestBody(
      *         @OA\JsonContent(
      *             @OA\Property(property="title", type="string", description="Title of the statistic"),
-     *             @OA\Property(property="number", type="integer", description="Number associated with the statistic")
+     *             @OA\Property(property="number", type="string", description="Number associated with the statistic")
      *         )
      *     ),
      *     @OA\Response(
@@ -175,7 +175,7 @@ class StatisticController extends Controller
      *                 type="object",
      *                 @OA\Property(property="id", type="integer"),
      *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="number", type="integer")
+     *                 @OA\Property(property="number", type="string")
      *             )
      *         )
      *     ),
@@ -197,7 +197,7 @@ class StatisticController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
-            'number' => 'sometimes|required|integer',
+            'number' => 'sometimes|required|string',
         ]);
 
         if ($validator->fails()) {

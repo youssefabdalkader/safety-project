@@ -10,8 +10,8 @@ class CreateStatisticsTable extends Migration
     {
         Schema::create('statistics', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('number');
+            $table->text('title');
+            $table->text('number');
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('_company_news', function (Blueprint $table) {
             $table->id('companyNewId');
             $table->string('companyNewTitle');
-            $table->string('companyNewUrl');
+            $table->text('companyNewUrl');
             $table->text('companyNewImageUrl');
             $table->timestamps();
         });

@@ -8,6 +8,7 @@ use App\Models\Certificate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyCertificateController extends Controller
 {
@@ -54,34 +55,51 @@ class CompanyCertificateController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Validator for request data
+        $validator = Validator::make($request->all(), [
             'certificatePhotoUrl' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'startat' => 'required|date',
             'endat' => 'required|date|after:startat',
         ]);
 
-        // Upload image to Cloudinary
-        $uploadResult = Cloudinary::upload($request->file('certificatePhotoUrl')->getRealPath(), [
-            'folder' => 'certificates',
-        ]);
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
-        $imageUrl = $uploadResult->getSecurePath();
+        try {
+            // Upload image to Cloudinary
+            $uploadResult = Cloudinary::upload($request->file('certificatePhotoUrl')->getRealPath(), [
+                'folder' => 'certificates',
+            ]);
 
-        // Create certificate entry in the database
-        $certificate = Certificate::create([
-            'certificateCode' => Str::uuid(),
-            'certificatePhotoUrl' => $imageUrl,
-            'startat' => $request->startat,
-            'endat' => $request->endat,
-        ]);
+            $imageUrl = $uploadResult->getSecurePath();
 
-        return response()->json([
-            'certificateCode' => $certificate->certificateCode,
-            'certificatePhotoUrl' => $imageUrl,
-            'startat' => $certificate->startat,
-            'endat' => $certificate->endat,
-            'invalid' => $certificate->invalid
-        ], 201);
+            // Create certificate entry in the database
+            $certificate = Certificate::create([
+                'certificateCode' => Str::uuid(),
+                'certificatePhotoUrl' => $imageUrl,
+                'startat' => $request->startat,
+                'endat' => $request->endat,
+            ]);
+
+            return response()->json([
+                'certificateCode' => $certificate->certificateCode,
+                'certificatePhotoUrl' => $imageUrl,
+                'startat' => $certificate->startat,
+                'endat' => $certificate->endat,
+                'invalid' => $certificate->invalid,
+            ], 201);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while storing the certificate.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -132,19 +150,29 @@ class CompanyCertificateController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="Success"),
+     *     @OA\Response(response=422, description="Validation Error"),
      *     @OA\Response(response=404, description="Not Found"),
      *     @OA\Response(response=500, description="Internal Server Error")
      * )
      */
     public function update(Request $request, $id)
     {
-        try {
-            $request->validate([
-                'startat' => 'sometimes|required|date',
-                'endat' => 'sometimes|required|date|after:startat',
-                'certificatePhotoUrl' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-            ]);
+        // Validator for update data
+        $validator = Validator::make($request->all(), [
+            'startat' => 'sometimes|required|date',
+            'endat' => 'sometimes|required|date|after:startat',
+            'certificatePhotoUrl' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
             $certificate = Certificate::findOrFail($id);
 
             // If a new photo is uploaded, replace the existing one
